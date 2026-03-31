@@ -1,5 +1,13 @@
 const { Client, GatewayIntentBits } = require('discord.js');
+const express = require('express'); // добавляем мини-сервер
+const app = express();
 
+// ----------------------
+// HTTP сервер для Render
+app.get('/', (req, res) => res.send('Bot is running!'));
+app.listen(process.env.PORT || 3000, () => console.log('Server started'));
+
+// ----------------------
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -34,27 +42,23 @@ client.on('ready', () => {
 });
 
 client.on('guildMemberUpdate', async (oldMember, newMember) => {
-  // Проходим по всем этапам
   for (const [roleId, message] of Object.entries(stages)) {
     const hadRole = oldMember.roles.cache.has(roleId);
     const hasRole = newMember.roles.cache.has(roleId);
 
     if (!hadRole && hasRole) {
-      // Ключ уникальный: пользователь + роль
       const key = `${newMember.id}_${roleId}`;
       if (greetedUsers.has(key)) continue;
 
       const channel = newMember.guild.channels.cache.get(CHANNEL_ID);
       if (!channel) return;
 
-      // Отправляем сообщение с тегом пользователя
       channel.send(`<@${newMember.id}> ${message}`);
-
       greetedUsers.add(key);
     }
   }
 });
 
 // ----------------------
-// Вставьте сюда токен вашего бота
+// Токен берём из переменных окружения
 client.login(process.env.TOKEN);
