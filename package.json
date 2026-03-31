@@ -1,16 +1,14 @@
 {
-  "name": "kaitaro-rank",
+  "name": "kaitaro-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Discord bot for KAITARO with 10 stages",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "discord.js": "^14.26.0"
+    "discord.js": "^14.12.1"
   }
 }
